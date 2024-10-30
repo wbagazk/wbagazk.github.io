@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Block Blast</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #222;
+  font-family: 'Arial', sans-serif;
+  color: #eee;
+  text-align: center;
+}
+
+canvas {
+  background-color: #000;
+  border: 2px solid #eee;
+  display: block;
+  margin: 50px auto;
+}
+
+#score {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+}
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="400" height="600"></canvas>
+<div id="score">Score: 0</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreElement = document.getElementById('score');
+
+let score = 0;
+let blocks = [];
+let ball = {};
+let paddle = {};
+let gameOver = false;
+
+// Block Properties
+const blockWidth = 40;
+const blockHeight = 20;
+const blockColor = '#eee';
+const blockRows = 5;
+const blockCols = 10;
+
+// Ball Properties
+const ballRadius = 10;
+const ballSpeed = 5;
+const ballColor = '#eee';
+
+// Paddle Properties
+const paddleWidth = 80;
+const paddleHeight = 10;
+const paddleColor = '#eee';
+
+// Initialize Blocks
+function createBlocks() {
+  for (let row = 0; row < blockRows; row++) {
+    for (let col = 0; col < blockCols; col++) {
+      blocks.push({
+        x: col * (blockWidth + 10) + 20,
+        y: row * (blockHeight + 10) + 50,
+        width: blockWidth,
+        height: blockHeight
+      });
+    }
+  }
+}
+
+// Initialize Ball
+function createBall() {
+  ball = {
+    x: canvas.width / 2,
+    y: canvas.height - 50,
+    radius: ballRadius,
+    dx: ballSpeed,
+    dy: -ballSpeed
+  };
+}
+
+// Initialize Paddle
+function createPaddle() {
+  paddle = {
+    x: canvas.width / 2 - paddleWidth / 2,
+    y: canvas.height - 30,
+    width: paddleWidth,
+    height: paddleHeight
+  };
+}
+
+// Draw Block
+function drawBlock(block) {
+  ctx.fillStyle = blockColor;
+  ctx.fillRect(block.x, block.y, block.width, block.height);
+  ctx.strokeStyle = '#000';
+  ctx.strokeRect(block.x, block.y, block.width, block.height);
+}
+
+// Draw Ball
+function drawBall() {
+  ctx.fillStyle = ballColor;
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// Draw Paddle
+function drawPaddle() {
+  ctx.fillStyle = paddleColor;
+  ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+  ctx.strokeStyle = '#000';
+  ctx.strokeRect(paddle.x, paddle.y, paddle.width, paddle.height);
+}
+
+// Move Ball
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+}
+
+// Ball Collision with Walls
+function ballWallCollision() {
+  if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+    ball.dx = -ball.dx;
+  }
+  if (ball.y - ball.radius < 0) {
+    ball.dy = -ball.dy;
+  }
+}
+
+// Ball Collision with Paddle
+function ballPaddleCollision() {
+  if (ball.y + ball.radius > paddle.y &&
+      ball.x > paddle.x &&
+      ball.x < paddle.x + paddle.width) {
+    ball.dy = -ball.dy;
+  }
+}
+
+// Ball Collision with Blocks
+function ballBlockCollision() {
+  blocks.forEach((block, index) => {
+    if (ball.x + ball.radius > block.x &&
+        ball.x - ball.radius < block.x + block.width &&
+        ball.y + ball.radius > block.y &&
+        ball.y - ball.radius < block.y + block.height) {
+      blocks.splice(index, 1);
+      ball.dy = -ball.dy;
+      score++;
+      scoreElement.textContent = 'Score: ' + score;
+    }
+  });
+}
+
+// Check Game Over
+function checkGameOver() {
+  if (ball.y + ball.radius > canvas.height) {
+    gameOver = true;
+    alert('Game Over! Your score: ' + score);
+  }
+}
+
+// Move Paddle with Mouse
+function movePaddle(event) {
+  paddle.x = event.clientX - paddle.width / 2;
+}
+
+// Game Loop
+function gameLoop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!gameOver) {
+    drawBlocks();
+    drawBall();
+    drawPaddle();
+    moveBall();
+    ballWallCollision();
+    ballPaddleCollision();
+    ballBlockCollision();
+    checkGameOver();
+  } else {
+    ctx.fillStyle = '#eee';
+    ctx.font = '30px Arial';
+    ctx.fillText('Game Over!', canvas.width / 2 - 80, canvas.height / 2);
+    ctx.fillText('Your Score: ' + score, canvas.width / 2 - 80, canvas.height / 2 + 40);
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+// Start the Game
+createBlocks();
+createBall();
+createPaddle();
+
+canvas.addEventListener('mousemove', movePaddle);
+gameLoop();
+</script>
+</body>
+</html>
