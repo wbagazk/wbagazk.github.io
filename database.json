@@ -2,8 +2,12 @@
   "allowedIps": ["172.18.0.4"],
   "users": [
     {
-      "username": "wbk",
-      "password": "@wbk"
+      "username1": "wbk",
+      "password1": "1234567890@wbk"
+    }
+    {
+      "username2": "wbk",
+      "password2": "abcde@wbk"
     }
   ]
 }
