@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist repository
-          path: "./dist"
+          path: "./dist"  # Pastikan ini adalah folder yang benar
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
