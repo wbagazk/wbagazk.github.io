@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Cek Nama Rekening
 
 #### DISCLAIMER
@@ -16,3 +17,6 @@ Sebuah software simple untuk Cek Nama Rekening kamu atau orang lain, dengan mema
 - [x] Hampir semua bank/e-wallet di Indonesia termasuk bank daerah didukung (BCA, BNI, BRI, BTN, CIMB, Danamon, GoPay, Jenius, LinkAja, Mandiri, OVO, ShopeePay, dll)
 - [x] API dokumentasi bisa dilihat di [https://documenter.getpostman.com/view/17822564/2s9YJaYPNQ]('[https://documenter.getpostman.com/view/17822564/2s9YJaYPNQ](https://documenter.getpostman.com/view/31839079/2sAYQgi8yL)')
 - [x] Web version bisa dilihat di [https://cekrekening.github.io/]('https://cekrekening.github.io/')
+=======
+# wbagazk.github.io
+>>>>>>> c0115c8a78412dd0f71a5124bae12e3acc0f1a43
